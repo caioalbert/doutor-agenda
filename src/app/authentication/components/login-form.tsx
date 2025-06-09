@@ -148,6 +148,15 @@ const LoginForm = () => {
                 </svg>
                 Entrar com Google
               </Button>
+              <div className="mt-2 text-center text-sm">
+                <a href="/forgot-password" className="text-primary hover:underline">
+                  Esqueci minha senha
+                </a>
+                {" | "}
+                <a href="/forgot-password-alternative" className="text-primary hover:underline">
+                  Esqueci minha senha (Alternativo)
+                </a>
+              </div>
             </div>
           </CardFooter>
         </form>

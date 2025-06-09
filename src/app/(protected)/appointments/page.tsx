@@ -48,6 +48,31 @@ const AppointmentsPage = async () => {
     }),
   ]);
 
+  // Agrupar agendamentos por status
+  const pendingAppointments = appointments.filter(
+    (appointment) => appointment.status === "pending"
+  );
+  
+  const confirmedAppointments = appointments.filter(
+    (appointment) => appointment.status === "confirmed"
+  );
+  
+  const completedAppointments = appointments.filter(
+    (appointment) => appointment.status === "completed"
+  );
+  
+  const canceledAppointments = appointments.filter(
+    (appointment) => appointment.status === "canceled"
+  );
+
+  // Ordenar para mostrar primeiro os pendentes, depois confirmados, depois concluídos, por fim cancelados
+  const sortedAppointments = [
+    ...pendingAppointments,
+    ...confirmedAppointments,
+    ...completedAppointments,
+    ...canceledAppointments,
+  ];
+
   return (
     <PageContainer>
       <PageHeader>
@@ -62,7 +87,7 @@ const AppointmentsPage = async () => {
         </PageActions>
       </PageHeader>
       <PageContent>
-        <DataTable data={appointments} columns={appointmentsTableColumns} />
+        <DataTable data={sortedAppointments} columns={appointmentsTableColumns} />
       </PageContent>
     </PageContainer>
   );

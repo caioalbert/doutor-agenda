@@ -143,6 +143,14 @@ export const doctorsTableRelations = relations(
 
 export const patientSexEnum = pgEnum("patient_sex", ["male", "female"]);
 
+// Enum para status de agendamento
+export const appointmentStatusEnum = pgEnum("appointment_status", [
+  "pending",    // Aguardando confirmação da clínica
+  "confirmed",  // Confirmado pela clínica
+  "canceled",   // Cancelado (por qualquer parte)
+  "completed",  // Consulta realizada
+]);
+
 export const patientsTable = pgTable("patients", {
   id: uuid("id").defaultRandom().primaryKey(),
   clinicId: uuid("clinic_id")
@@ -182,6 +190,8 @@ export const appointmentsTable = pgTable("appointments", {
   doctorId: uuid("doctor_id")
     .notNull()
     .references(() => doctorsTable.id, { onDelete: "cascade" }),
+  status: appointmentStatusEnum("status").notNull().default("pending"),
+  cancellationReason: text("cancellation_reason"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()

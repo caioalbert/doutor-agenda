@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
+import { Badge } from "@/components/ui/badge";
 import { appointmentsTable } from "@/db/schema";
 
 import AppointmentsTableActions from "./table-actions";
@@ -53,6 +54,39 @@ export const appointmentsTableColumns: ColumnDef<AppointmentWithRelations>[] = [
     id: "specialty",
     accessorKey: "doctor.specialty",
     header: "Especialidade",
+  },
+  {
+    id: "status",
+    accessorKey: "status",
+    header: "Status",
+    cell: (params) => {
+      const appointment = params.row.original;
+      const status = appointment.status;
+      
+      let badgeVariant: "default" | "secondary" | "destructive" | "outline" = "outline";
+      let label = "Desconhecido";
+      
+      switch (status) {
+        case "pending":
+          badgeVariant = "outline";
+          label = "Pendente";
+          break;
+        case "confirmed":
+          badgeVariant = "default";
+          label = "Confirmado";
+          break;
+        case "canceled":
+          badgeVariant = "destructive";
+          label = "Cancelado";
+          break;
+        case "completed":
+          badgeVariant = "secondary";
+          label = "Concluído";
+          break;
+      }
+      
+      return <Badge variant={badgeVariant}>{label}</Badge>;
+    },
   },
   {
     id: "price",
